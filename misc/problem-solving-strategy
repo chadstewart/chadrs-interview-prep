@@ -1,0 +1,91 @@
+Problem-Solving Framework
+
+This framework always produces an output to make things easy to remember
+
+Understand the Problem: Repeat the problem aloud in your own words and write it down if you can. Listen for potential clues in the problem statement to identify potential strategies for solving the problem and its optimal solution. Then ask the interviewer clarifying questions about the problem. For instance:
+
+What kind of input should we expect (clarify input)
+What kind of output should we return (clarify output)
+Are there particular constraints that we should observe
+Try to get interviewer to talk about any edge cases
+
+Afterwards, give examples of the problem in the form of if given parameters, what is the expected output.
+
+What is produced: After you have a clear understanding of what the problem is, write test cases to test for the most important parts of the problem. Tests do not need to be formal but they should give a good idea how to properly test for something. Keep the test cases small so that you can quickly go through them and have a general test case and then test cases for edge cases you think of.
+
+
+Come up with a strategy: Start to formulate a strategy by making a sufficiently large test case with no special conditions (data is sorted, no duplicates, if more than one input they are the same length, etc.) and use that to test your understanding of what the problem requires. This should help you come up with insights on the problem space and the data to best figure out how to solve it. Start with the brute force solution here to solve the problem and try to state the run-time of the solution.
+
+What is produced: A blueprint written in plain english on how you plan to solve the problem. Aim to write a step by step guide on how to build the solution describing from beginning to end how the program should work but doesn’t have to contain major implementation details.
+
+
+Optimize the solution: Now that you have a plain english explanation of how to solve the problem, try to figure out how to optimize the problem. There are several strategies you can use to do this. One is B.U.D.:
+B: Bottlenecks
+U: Unnecessary Work
+D: Duplicated Work
+Another strategy is do it yourself. This is essentially just take a layman’s approach to solving the problem and potentially garnering insights from that activity. Another is focusing on the space/time complexity, trying to achieve a particular space/time complexity and then trying to build a solution around that. 
+
+
+What is produced: What is expected to be produced is a more optimized strategy after going through the initial approach and making note of what can be optimized. What can also be produced is a report noting the strengths and drawbacks of other approaches that optimize one thing at the sacrifice of another. This is likely produced when your initial solution was already optimal in space or time complexity.
+
+
+Execute on the strategy (write code): Now take the previous strategy was written and translate it to code. The strategy will help focus your mind on the problem and the tests will help remind you what must be done and the boundaries you need to stay within as you are coding. Coding technique is important here so keep these in mind as your coding:
+
+
+Write for clarity and readability
+Write modular and unit-testable code
+When modularizing the code, start with a main and write function calls for each action of your strategy.
+Write out each function call by order of importance and interest. It is possible that the interviewer may not have you write out every single function
+D.R.Y. - Don’t Repeat Yourself
+S.O.L.I.D 
+Single Responsibility Principle
+Open/Close Principle
+Liskov Substitution Principle
+Interface Segregation Principle
+Dependency Inversion Principle
+Y.A.G.N.I. You ain’t gonna need it
+
+What is produced: Well-written, well formatted, readable, modular, unit-testable code. Try to write production-level code as best as you can. Also, it should obviously solve the problem.
+
+
+Test the code: Give the code an once over to make sure the logic is correct and you properly executed on your idea. Next check potential problem areas for bugs, for instance places doing Math, potentially complicated code, etc. Then take the previous test cases and run through them step by step with your code. Execute each line just as instructed and see if you would get the expected output. If there are bugs, make note of them and quickly go to fix them if you can.
+
+What is produced: Nothing directly is being produced but the previous code, if found to be buggy, will be changed to be less buggy. Preferably less buggy to the point where we can go through all previously written test-cases without issues.
+
+
+
+Framework Skeleton
+
+//Problem Statement
+
+*Problem Statement in own words go here*
+
+//Examples
+
+*Example goes here*
+
+//Tests
+
+*Tests go here*
+
+//Proposed Procedure
+
+*Written procedure goes here (brute force preferred)*
+
+Proposed space complexity O(?) / time complexity O(?)
+
+//Can this procedure be optimized?
+
+//Optimized Procedure
+
+*Optimized procedure goes here*
+
+Optimized space complexity O(?) / time complexity  O(?)
+
+//Solution Attempt:
+
+*Code goes here*
+
+//Testing Notes
+
+*Any testing observations go here*

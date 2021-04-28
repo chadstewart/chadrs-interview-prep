@@ -1,0 +1,71 @@
+/*
+
+Longest Substring Without Repeating Characters
+
+//Problem Statement
+
+Given a string, find the longest substring of characters without repeating characters.
+
+//Tests
+
+string = 'abcdeeadcc', output = 5
+string = 'afrdfacl', output = 4
+string = 'aa', output = 1
+string = '', output = 0
+
+//Proposed Procedure
+
+1. Create a hash table for characters
+2. Loop through the given array
+3. As characters are being read, check if they are in the hash table
+ 3a. If they aren't, add them to the hash table
+ 3b. if they are, read count of characters, save count and reset hash table and counter.
+4. Output saved counter
+
+*/
+
+//Solution Attempt:
+
+/**
+ * @param {string} s
+ * @return {number}
+ */
+var lengthOfLongestSubstring = function(s) {
+    let count = 0;
+    let maxCount = 0;
+    let charChecker = {};
+
+    for(let i = 0; i < s.length; i++) {
+        if(charChecker[s[i]] === true) {
+            maxCount = countChecker(maxCount, count);
+            charChecker = {};
+            charChecker[s[i]] = true;
+            count = 1;
+        } else {
+            charChecker[s[i]] = true;
+            count++;
+        }
+
+        if(i === s.length - 1) maxCount = countChecker(maxCount, count);
+    }
+
+    return maxCount;
+};
+
+function countChecker(num1, num2) {
+    Math.max(num1, num2);
+}
+
+/*
+
+Proposed space complexity O(n) / time complexity O(n)
+
+//Testing Notes
+
+Nothing of interest.
+
+//Can this procedure be optimized?
+
+The space complexity can be optimized but that would sacrifice the time complexity to do so. The time complexity cannot be optimized further as far as I can tell.
+
+*/

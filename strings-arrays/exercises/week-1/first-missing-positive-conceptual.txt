@@ -1,0 +1,33 @@
+//Problem Statement
+
+Given an unsorted integer array nums, find the smallest missing positive integer.
+
+//Examples
+
+[7,3,6,5,1,2,5,9,4]
+
+representation of the number line: 1*, 2*, 3*, 4*, 5*, 6*, 7*, 8, 9*, 10, 11, 12, 13, ...
+
+//Tests
+
+input = [7,3,6,5,1,2,5,9,4], output = 8
+input = [5,4,9,88,7,15,6,11], output = 1
+input = [], output = ???
+
+//Proposed Procedure
+
+1. Convert array to hash map.
+2. Start a count from 1 and check if count value is in hash map. If not, then return count value.
+
+Proposed space complexity O(n) / time complexity O(n)
+
+//Can this procedure be optimized?
+This can only be optimized for the space complexity at the expense of the time complexity. This is the most optimized solution time-wise.
+
+//Solution Attempt:
+
+*Code goes here*
+
+//Testing Notes
+
+*Any testing observations go here*
