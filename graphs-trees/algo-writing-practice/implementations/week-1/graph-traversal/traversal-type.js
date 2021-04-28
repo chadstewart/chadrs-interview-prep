@@ -1,4 +1,4 @@
-export function dfs(graph, visited, unvisited, getUnvisitedNodes) {
+function dfs(graph, visited, unvisited, getUnvisitedNodes) {
     let currentNode;
 
     while (unvisited.length !== 0) {
@@ -10,7 +10,7 @@ export function dfs(graph, visited, unvisited, getUnvisitedNodes) {
     return visited;
 }
 
-export function bfs(graph, visited, unvisited, getUnvisitedNodes) {
+function bfs(graph, visited, unvisited, getUnvisitedNodes) {
     let currentNode;
 
     while (unvisited.length !== 0) {
@@ -21,3 +21,8 @@ export function bfs(graph, visited, unvisited, getUnvisitedNodes) {
 
     return visited;
 }
+
+module.exports = {
+    dfs,
+    bfs
+};
