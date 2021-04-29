@@ -1,0 +1,80 @@
+//Problem Statement
+
+You are given a string S that contains N characters. Your task is to determine the maximum possible size of the subsequence T of S such that no two adjacent characters in T are the same.
+
+//Examples
+
+abcdefghhabcdef, 7
+
+//Example Notes
+
+Whenever there's a character that has matching characters adjacent to it, neither of the matching characters never get counted.
+
+//Tests
+
+abccd, 2
+abcdefg, 7
+'', 0
+aaaaaaaaa, 0
+
+//Proposed Procedure
+
+1. Loop through the string
+2. if index is 0, only check if character to the left is the same
+3. if index is length of string minus 1, only check if character to the right is the same
+4. Otherwise, check if the both characters on either side of the element is the same.
+5. Increment counter until a match is found or string ends, then save the counter and reset.
+6. return max counter
+
+Proposed space complexity O(1) / time complexity O(N)
+
+//Can this procedure be optimized?
+
+This cannot be optimized any further that I know of.
+
+//Solution Attempt:
+
+**
+ * @param {string} characters
+ * @return {number}
+ */
+var uniqueSubsequence = function(chars) {
+    let counter = 0;
+    let maxCount = 0;
+    let charsArray = chars.split('');
+
+    for(let i = 0; i < charsArray.length; i++) {
+        if(i > 0 && i < charsArray.length - 1) {
+            if (charsArray[i] !== charsArray[i - 1] && charsArray[i] !== charsArray[i + 1]) {
+                counter++;
+            } else {
+                maxCount = Math.max(maxCount, count);
+                count = 0;
+            }
+        } else if (i === 0) {
+            if(charsArray[i] !== charsArray[i + 1]) {
+                counter++;
+            } else {
+                maxCount = Math.max(maxCount, count);
+                count = 0;
+            }
+        } else {
+            if(charsArray[i] !== charsArray[i - 1]) {
+                counter++;
+            } else {
+                maxCount = Math.max(maxCount, count);
+                count = 0;
+            }
+        }
+
+        if(i === charsArray.length - 1) maxCount = Math.max(maxCount, count);
+    }
+
+    return maxCount;
+}
+
+abccd, 2
+
+//Testing Notes
+
+Nothing interesting of note to report.
