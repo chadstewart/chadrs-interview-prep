@@ -1,7 +1,7 @@
 function bfs(root, result) {
     let unvisited = [root, '*'];
 
-    while(unvisited) {
+    while(unvisited.length > 1) {
         currentNode = unvisited.pop();
         
         if(currentNode === '*') {
