@@ -64,6 +64,10 @@ Framework Skeleton
 
 *Example goes here*
 
+//Example Notes
+
+*Any observations going through the example goes here*
+
 //Tests
 
 *Tests go here*
@@ -75,6 +79,8 @@ Framework Skeleton
 Proposed space complexity O(?) / time complexity O(?)
 
 //Can this procedure be optimized?
+
+*Answer to above question goes here*
 
 //Optimized Procedure
 
