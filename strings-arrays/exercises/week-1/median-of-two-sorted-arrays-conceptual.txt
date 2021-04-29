@@ -20,7 +20,7 @@ input = [], [] = 0
 1. Merge both sorted arrays into one large sorted array.
 2. Take array length and divide it by 2.
 3. If quotient is odd, round down and return element at quotient.
-4. If quotient is even, take quotient and quotient minus 1, add both elements, divide by 2 and return that number.
+4. If quotient is even, take quotient and minus 1 from it, add both elements together, divide by 2 and return that number.
 
 Proposed space complexity O(m + n) / time complexity O(m + n)
 
@@ -31,7 +31,7 @@ The space complexity can be optimized by not producing another array.
 
 1. Take both array lengths, add them and divide the sum by 2.
 2. Create pointers and compare both array elements at pointer.
-3. If element in array 1 is less then element in array 2, shift array 1 pointer by one otherwise shift array 2 pointer by 1 and increment count
+3. If element in array 2 is greater than element in array 1, shift array 1 pointer by one otherwise shift array 2 pointer by 1 and increment count
 4. If array length quotient is odd, round down and return element at quotient.
 5. If array length quotient is even, take quotient and quotient minus 1, add both elements, divide by 2 and return that number.
 

@@ -1,0 +1,107 @@
+//Problem Statement
+
+Given a list of unique words, return all the pairs of the distinct indices (i, j) in the given list, so that the concatenation of the two words words[i] + words[j] is a palindrome.
+
+//Examples
+
+palindrome examples: abcba abba
+example 1, input: [gdf, rft, lm, n, dg, mon, ft, l, om, fdg], output: [[0,4], [0,9], [2,7], [5,8]]
+
+//Example Notes:
+Any string has two options for potential palindromes: the string reversed or removing the last letter of the string then reverseing the result
+Pairs can be found twice and so there needs to be a check to ensure pairs are only recorded once.
+
+//Tests
+
+[gdf, fdg, dg] = [[0,1], [0,2]]
+[rm, l] = []
+[] = []
+[gdf, fdg, dg] != [[0,1], [0,2], [2,0]]
+
+//Proposed Procedure
+
+1. Make list of strings into Hash Map and record the location that they were in the array. N
+2. Loop through list of strings and check for palindromes N
+  a. Check if string reversed exists in Hash Map 1
+  b. Check if string with last letter removed and then reversed exists in Hash Map 1
+  c. Record Hash Map string location and selected string location of whichever that exists. 1
+  d. Check if recorded locations exist in list but in reverse and ignore this result if they do. N
+
+Proposed space complexity O(N) / time complexity O(N^2)
+
+//Can this procedure be optimized?
+
+This can be optimized by optimizing the check for recorded locations. This can be done by creating a Hash Map for results
+
+//Optimized Procedure
+
+1. Make list of strings into Hash Map and record the location that they were in the array. N
+2. Create both a results hash map and a result array for the eventual output.
+3. Loop through list of strings and check for palindromes N
+  a. Check if string reversed exists in Hash Map 1
+  b. Check if string with last letter removed and then reversed exists in Hash Map 1
+  c. Record Hash Map string location and selected string location of whichever that exists as well as add to results hash map. 1
+  d. Check if recorded locations exist in results hash map but in reverse and ignore this result if they do. 1
+4. Return results array
+
+Optimized space complexity O(M + N) / time complexity  O(N)
+
+//Solution Attempt:
+
+/**
+ * @param {string[]} words
+ * @return {number[][]}
+ */
+var palindromePairs = function(words) {
+    if(!words) return 'Please add words';
+
+    let wordHash = createHash(words);
+    return checkForPalindromes(words, wordHash);
+};
+
+function wordHash(words) {
+    let hash = {};
+
+    for(let i = 0; i < words.length: i++) {
+        hash[words[i]] = i;
+    }
+
+    return hash;
+}
+
+function checkForPalindromes(words, wordHash) {
+    let result = [];
+    let resultHash = {};
+    let pair = [];
+    let reverse = '';
+
+    for(let i = 0; i < words.length; i++) {
+        reverse = words[i].split('').reverse().join();
+        isPalindromePresent(reverse, wordHash, words.length, result, resultHash, pair);
+        reverse = reverse.split('').shift().join();
+        isPalindromePresent(reverse, wordHash, words.length, result, resultHash, pair);
+    }
+
+    return result;
+}
+
+function isPalindromePresent(reverse, wordHash, wordsLength, result, resultHash, pair) {
+    if(typeof wordHash[reverse] === 'number' &&
+           wordHash[reverse] < wordsLength &&
+           wordHash[reverse] >= 0) {
+               pair = [i, wordHash[reverse]];
+               
+               if(!resultHash[pair] === true || !resultHash[pair.reverse()] === true) {
+                   resultHash[pair] = true;
+                   result.push(pair);
+               }
+        }
+}
+
+[gdf, fdg, dg] = [[0,1], [0,2]]
+
+//Testing Notes
+
+Not too important but forgot to add resultHash when finishing writing at first. Also, odd + even palindromes won't find themselves if using the smaller of the two to find the bigger. This is find though because if you go through the entire array, the pair will be eventually found.
+
+
