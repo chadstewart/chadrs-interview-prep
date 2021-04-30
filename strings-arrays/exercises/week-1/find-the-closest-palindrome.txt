@@ -90,10 +90,10 @@ function checkIfPalindrome(number, center) {
     for(int i = 0; i < center; i++) {
         if(number[i] !== number[(number.length - 1) - i]) {
             return false;
-        } else {
-            return true;
         }
     }
+
+    return true;
 }
 
 function palindromeConstruction(testing, center) {
