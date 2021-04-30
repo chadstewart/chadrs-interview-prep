@@ -64,7 +64,7 @@ var nearestPalindromic = function(number) {
     if(!number || number === '') return 0;
     
     let palindromes = createPalindromes(number);
-    return typeof palindromes === 'string' ? palindromes : comparePalindromes(palindromes);
+    return typeof palindromes === 'string' ? palindromes : comparePalindromes(palindromes, number);
 };
 
 function createPalindrome(number) {
@@ -83,7 +83,7 @@ function createPalindrome(number) {
             return testing.join().toString();
         }
     } else {
-        palindromeConstruction(testing, center);
+        return palindromeConstruction(testing, center);
     }
 }
 
@@ -94,7 +94,32 @@ function checkIfPalindrome(number, center) {
 }
 
 function palindromeConstruction(testing, center) {
-    
+    let palindromes = [];
+
+    if(testing.length % 2 === 0) {
+        for(let i = 0; i < center; i++) palindromes[0].push(testing[i]);
+        for(let i = center - 1; i >= 0; i--) palindromes[0].push(testing[i]);
+        palindrome[0].join();
+        for(let i = testing.length - 1; i <= center; i--) palindromes[1].push(testing[i]);
+        for(let i = center; i < testing.length; i++) palindromes[1].push(testing[i]);
+        palindrome[1].join();
+    } else {
+        for(let i = 0; i < center; i++) palindromes[0].push(testing[i]);
+        for(let i = center; i >= 0; i--) palindromes[0].push(testing[i]);
+        palindrome[0].join();
+        for(let i = testing.length - 1; i > center; i--) palindromes[1].push(testing[i]);
+        for(let i = center; i < testing.length; i++) palindromes[1].push(testing[i]);
+        palindrome[1].join();
+    }
+
+    return palindromes;
+}
+
+function comparePalindromes(palindromes, number) {
+    let palDiff1 = Math.abs(palindromes[0] - number);
+    let palDiff2 = Math.abs(palindromes[1] - number);
+
+    return Math.min(palDiff1, palDiff2) === palDiff1 ? palindromes[0].toString() : palindromes[1].toString();
 }
 
 //Testing Notes
