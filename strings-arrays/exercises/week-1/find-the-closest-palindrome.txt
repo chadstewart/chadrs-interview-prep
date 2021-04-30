@@ -1,0 +1,102 @@
+//Problem Statement
+
+Given a string n representing an integer, return the closest integer (not including itself), which is a palindrome. If there is a tie, return the smaller one.
+
+The closest is defined as the absolute difference minimized between two integers.
+
+//Examples
+
+palindrome: 12321, 1221
+
+846546 100 + 2 846648
+
+15366
+
+15351
+
+121 + 10
+
+1221 + 1 = 1222 = 1221, 2222
+
+11 22
+
+121 131
+
+123321 124421 133331 224422
+
+66
+
+//Example Notes
+
+There are two types of palindromes, odd and even palindromes and there are two ways to take input and make a palindrome. Cut in center and check left palindrome and right palindrome.
+
+//Tests
+
+123 = 121
+1225 = 1221
+
+//Proposed Procedure
+
+Note: No need to convert string to int in JavaScript
+
+1. Take given string and convert to palindrome
+  a. Identify if string length is even or odd
+  b. Split string based on previous answer
+  c. Create two palindromes by copying one half, reversing and placing it on the other end
+  d. If string is palindrome, add 1 to center digit if length is odd or right most center digit if length is even
+2. Compare both palindromes to original string
+  a. The string with the smaller difference wins.
+  b. If difference is the same, the smaller palindrome wins.
+
+Proposed space complexity O(1) / time complexity O(n)
+
+//Can this procedure be optimized?
+
+As far as I can tell, there is no way to optimize this process.
+
+//Solution Attempt:
+
+/**
+ * @param {string} number
+ * @return {string}
+ */
+var nearestPalindromic = function(number) {
+    if(!number || number === '') return 0;
+    
+    let palindromes = createPalindromes(number);
+    return typeof palindromes === 'string' ? palindromes : comparePalindromes(palindromes);
+};
+
+function createPalindrome(number) {
+    let palindromes = {};
+    let center = Math.floor(number.length / 2);
+    let isPalindrome = checkIfPalindrome(number, center);
+    let testing = number.split('');
+
+    if(isPalindrome) {
+        if(testing.length % 2 === 0) {
+            testing[center - 1]--;
+            testing[center]--;
+            return testing.join().toString();
+        } else {
+            testing[center]--;
+            return testing.join().toString();
+        }
+    } else {
+        palindromeConstruction(testing, center);
+    }
+}
+
+function checkIfPalindrome(number, center) {
+    for(int i = 0; i < center; i++) {
+        return number[i] !== number[(number.length - 1) - i]
+    }
+}
+
+function palindromeConstruction(testing, center) {
+    
+}
+
+//Testing Notes
+
+*Any testing observations go here*
