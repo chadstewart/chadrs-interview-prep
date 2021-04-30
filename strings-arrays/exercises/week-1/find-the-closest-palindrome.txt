@@ -68,7 +68,6 @@ var nearestPalindromic = function(number) {
 };
 
 function createPalindrome(number) {
-    let palindromes = {};
     let center = Math.floor(number.length / 2);
     let isPalindrome = checkIfPalindrome(number, center);
     let testing = number.split('');
@@ -89,7 +88,11 @@ function createPalindrome(number) {
 
 function checkIfPalindrome(number, center) {
     for(int i = 0; i < center; i++) {
-        return number[i] !== number[(number.length - 1) - i]
+        if(number[i] !== number[(number.length - 1) - i]) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 
