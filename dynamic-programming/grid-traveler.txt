@@ -1,0 +1,112 @@
+//Problem Statement
+
+Say that you are a traveler on a 2D grid. You begin in the top-left corner and your goal is to travel to the bottom-right corner. You may only move down or right.
+
+In how many ways can you travel to the goal on a grid with dimentions m * n?
+
+Write a function 'gridTraveler(m, n)' that calculates this.
+
+//Examples
+
+gridTraveler(1, 1) = 1      []
+
+gridTraveler(2, 2) = 2      [][]
+                            [][]
+
+gridTraveler(0, 1) = 0
+gridTraveler(1, 0) = 0
+
+//Example Notes
+
+Not in examples above but whenever you do a movement on the grid, you effectively reduce the grid problem by 1 unit in the direction you traveled. Base cases are 1 x 1 grids only having 1 way to travel and a grid where m or n is 0 has no ways to travel.
+
+//Tests
+
+gridTraveler(1, 1) = 1
+gridTraveler(2, 2) = 2
+gridTraveler(0, 1) = 0
+gridTraveler(1, 0) = 0
+
+//Proposed Procedure
+
+1. Check base cases. If m = n = 1, return 1. If either m or n is > 1 then return 0.
+2. Recursively call gridTraveler with both m - 1 and n - 1 and add their return values.
+3. Return sum of addition.
+
+Proposed space complexity O(n) / time complexity O(2^n)
+
+//Solution Attempt:
+
+function gridTraveler(m, n) {
+    if(m === 1 && n === 1) return 1;
+    if(m === 0 || n === 0) return 0
+
+    let traverseSum = 0;
+    traverseSum = gridTraveler(m - 1, n) + gridTraveler(m, n - 1);
+    return traverseSum;
+}
+
+//Testing Notes
+
+Works as intended but takes a long time for large enough input.
+
+//Can this procedure be optimized?
+
+Yes. There are a lot of repeat problems being done that can be avoided by saving the result of the work done.
+
+//Optimized Procedure
+
+1. Add memo object to function.
+2. Check base cases. If m = n = 1, return 1. If either m or n is > 1 then return 0.
+3. Check if m, n is already in memo object and return if there.
+4. Recursively call gridTraveler with both m - 1 and n - 1 and add their return values to memo object.
+5. Return sum of addition.
+
+Optimized space complexity O(n) / time complexity  O(n)
+
+//Solution Attempt:
+
+function gridTraveler(m, n, memo = {}) {
+    if(memo[[m,n]]) return memo[[m,n]];
+    if(m === 1 && n === 1) return 1;
+    if(m === 0 || n === 0) return 0;
+
+    memo[[m,n]] = gridTraveler(m - 1, n, memo) + gridTraveler(m, n - 1, memo);
+    return memo[[m,n]];
+}
+
+//Testing Notes
+
+Works as expected
+
+//Alternative Optimized Procedure
+
+1. Create multidimensional array of size m + 1, n + 1 and fill with 0;
+2. Add base case to 1, 1 case.
+3. Add number in cell to cell to the right and cell to the left.
+  a. Ensure that if no cell to the right or bottom of current cell, don't attempt calculation
+4. Return array[m,n];
+
+//Alternative space complexity O(m * n) / time complexity O(m * n)
+
+//Solution Attempt:
+
+function gridTraveler(m,n) {
+    let table = Array(m + 1)
+    .fill()
+    .map(() => Array(n + 1).fill(0));
+    table[1][1] = 1;
+
+    for(let i = 0; i < table.length; i++) {
+        for(let j = 0; j < table[i].length; j++) {
+            if(i < table.length - 1) table[i + 1][j] = table[i][j] + table[i + 1][j];
+            if(j < table[i].length - 1) table[i][j + 1] = table[i][j] + table[i][j + 1];
+        }
+    }
+
+    return table[m][n];
+}
+
+//Testing Notes
+
+Works as expected.
