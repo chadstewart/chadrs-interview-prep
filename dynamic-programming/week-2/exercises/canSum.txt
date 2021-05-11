@@ -1,0 +1,117 @@
+//Problem Statement
+
+Write a function 'canSum(targetSum, numbers)' that takes in a targetSum and an array of numbers as arguments.
+
+The function should return a boolean indicating whether or not it is possible to generate the targetSum using numbers from the array.
+
+You may use an element of the array as many times as needed.
+
+You may assume that all input numbers are nonnegative.
+
+//Examples
+
+ts = 12, nums = 13, 11, 2, 6, 8, 14, 3, 19, ans = T
+ts = 3, nums = 2, 1, 4, ans = T
+
+//Example Notes
+
+Not shown in example but as long as one of the elements delivers a true statement then it is possible to generate a sum.
+
+//Tests
+
+*Tests go here*
+
+//Proposed Procedure
+
+1. Check if targetSum is 0 then return true, if targetSum is less than 0 return false.
+2. Create a variable to hold boolean and set to false.
+3. Loop through nums and recursively call canSum and only add variable if the recursion returns true.
+4. Return variable.
+
+Proposed space complexity O(n) / time complexity O(m * n)
+
+//Solution Attempt:
+
+function canSum(targetSum, numbers) {
+    if(targetSum === 0) return true;
+    if(targetSum < 0) return false;
+
+    let canCreate = false;
+
+    for(let num of numbers) {
+        let check = canSum(targetSum - num, numbers);
+        if(check === true) canCreate = check;         
+    }
+
+    return canCreate;
+}
+
+//Testing Notes
+
+Works as intended but there is possiblility of doing work that has already been done.
+
+//Can this procedure be optimized?
+
+Yes, this can be optimized by eliminating doing the same work multiple times.
+
+//Optimized Procedure
+
+1. Add memo object to function and intialize if empty to empty object.
+2. Check if targetSum is in memo object and return if it's in memo object.
+3. Check if targetSum is 0 then return true, if targetSum is less than 0 return false.
+4. Loop through nums and recursively call canSum
+5. Add result to memo and only add to variable if the recursion returns true.
+6. Return result.
+
+Optimized space complexity O(n) / time complexity  O(n)
+
+//Solution Attempt:
+
+function canSum(targetSum, numbers, memo = {}) {
+    if(memo[targetSum]) return memo[targetSum];
+    if(targetSum === 0) return true;
+    if(targetSum < 0) return false;
+
+    for(let num of numbers) {
+        let check = canSum(targetSum - num, numbers, memo);
+        if(check === true) {
+            memo[targetSum] = true;
+            return true;
+        }         
+    }
+
+    memo[targetSum] = false;
+    return false;
+}
+
+//Testing Notes
+
+Works as expected
+
+//Alternative Optimized Procedure
+
+1. Create table of size targetSum + 1 and fill with false.
+2. Add true at table[0].
+3. Loop through the created table array
+  a. If cell is marked true
+    i. check other positions based on numbers array and mark true. Ensure position is within table length
+  b. If cell is marked false
+    i. do Nothing
+4. Return table[targetSum]
+
+//Alternattive space complexity O(n) / time complexity O(n * m)
+
+//Alternative solution attempt:
+
+function canSum(targetSum, numbers) {
+    let table = Array(targetSum + 1).fill(false);
+    table[0] = true;
+
+    for(let i = 0; i < targetSum; i++) {
+        for(let num of numbers) {
+            if(table[i] === true && i + num < table.length) table[i + num] = true;
+        }
+    }
+
+    return table[targetSum];
+}
