@@ -17,7 +17,7 @@ This is similar to both canSum and howSum but an important note is that you abso
 
 //Tests
 
-*Tests go here*
+bestSum(3, [2, 1, 4]);
 
 //Proposed Procedure
 
@@ -30,7 +30,7 @@ This is similar to both canSum and howSum but an important note is that you abso
     ii. Add it to result if combination is less than result or result is null.
 4. Return array
 
-Proposed space complexity O(?) / time complexity O(?)
+Proposed space complexity O(m) / time complexity O((n^m)*m)
 
 //Solution Attempt
 
@@ -72,7 +72,7 @@ Yes, there is duplicate work being done in this algorithm.
     ii. Add it to result if combination is less than result or result is null.
 6. Add result to memo object and return array
 
-Optimized space complexity O(?) / time complexity  O(?)
+Optimized space complexity O(m^2) / time complexity  O(n * m^2)
 
 //Solution Attempt:
 
@@ -110,7 +110,7 @@ Works as expected. No other notes because I didn't solve on my own.
     ii. If index + num is null or current combination is less than combination at index + num then write current combination to index + num
 4. Return table[targetSum]
 
-//Alternative space complexity O() / time complexity O()
+//Alternative space complexity O(m^2) / time complexity O(m ^ 2 * n)
 
 //Solution Attempt
 
