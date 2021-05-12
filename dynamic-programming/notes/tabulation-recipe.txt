@@ -2,7 +2,8 @@ Tabulation Recipe (from coderbyte Dynamic Programming Course)
 
 1. visualize the problem as a table
 2. size the table based on the inputs
-3. initialize the table with default values
-4. seed the trivial answer into the table
-5. iterate through the table
-6. fill further positions based on the current position
+3. Identify base cases for the problem
+4. initialize the table with default values
+5. seed the trivial answer into the table derived from base cases
+6. iterate through the table
+7. fill further positions based on the current position

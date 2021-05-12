@@ -1,0 +1,138 @@
+//Problem Statement
+
+Write a function 'bestSum(targetSum, numbers)' that takes in a targetSum and an array as arguments.
+
+The funciton should return an array containing the shortest combination of numbers that add up to exactly the targetSum.
+
+If there is a tie for the shortest combination, you may return any of the shortest.
+
+//Examples
+
+ts = 3, nums = 2, 1, 4, ans = [2,1]
+ts = 8, nums = 4, 8 , 16, 2, 3, 11, 1, 5, ans = [8]
+
+//Example Notes
+
+This is similar to both canSum and howSum but an important note is that you absolutely have to go through the entirity of the array to ensure you have the shortest combination of numbers.
+
+//Tests
+
+*Tests go here*
+
+//Proposed Procedure
+
+1. Check if targetSum is zero and return an empty array
+2. Check if targetSum is less than zero and return null
+3. Loop through nums array
+  a. Recurse through function and add return value to a variable
+  b. If variable is not null
+    i. Create a variable conbination and add the combination
+    ii. Add it to result if combination is less than result or result is null.
+4. Return array
+
+Proposed space complexity O(?) / time complexity O(?)
+
+//Solution Attempt
+
+function bestSum(targetSum, numbers) {
+    if(targetSum === 0) return [];
+    if(targetSum < 0) return null;
+
+    let result = null;
+
+    for(let num of numbers) {
+        let returnedArray = bestSum(targetSum - num, numbers);
+        if(returnedArray !== null) {
+            let combination = [...returnedArray, num];
+            if(result === null || combination.length < result.length) result = combination;
+        }
+    }
+
+    return result;
+}
+
+//Testing Notes
+
+Wasn't able to come up with a solution without looking up the video. Need to go over this problem again. Wasn't able to figure out how to test the combination once it got to the top level of recursion tree.
+
+//Can this procedure be optimized?
+
+Yes, there is duplicate work being done in this algorithm.
+
+//Optimized Procedure
+
+1. Create memo object in function call
+2. Check if memo object has target sum and return if it does
+3. Check if targetSum is zero and return an empty array
+4. Check if targetSum is less than zero and return null
+5. Loop through nums array
+  a. Recurse through function and add return value to a variable
+  b. If variable is not null
+    i. Create a variable conbination and add the combination
+    ii. Add it to result if combination is less than result or result is null.
+6. Add result to memo object and return array
+
+Optimized space complexity O(?) / time complexity  O(?)
+
+//Solution Attempt:
+
+function bestSum(targetSum, numbers, memo = {}) {
+    if(memo[targetSum]) return memo[targetSum];
+    if(targetSum === 0) return [];
+    if(targetSum < 0) return null;
+
+    let result = null;
+
+    for(let num of numbers) {
+        let returnedArray = bestSum(targetSum - num, numbers, memo);
+        if(returnedArray !== null) {
+            let combination = [...returnedArray, num];
+            if(result === null || combination.length < result.length) result = combination;
+        }
+    }
+
+    memo[targetSum] = result;
+    return memo[targetSum];
+}
+
+//Testing Notes
+
+Works as expected. No other notes because I didn't solve on my own.
+
+//Alternative Procedure
+
+1. Create a table of size targetSum + 1 and fill it with null
+2. Write at table[0] an empty array []
+3. Loop through table array
+  a. if index is not null, loop through numbers array
+    i. if index + num is less than table length.
+    i. Create combination of current array and num
+    ii. If index + num is null or current combination is less than combination at index + num then write current combination to index + num
+4. Return table[targetSum]
+
+//Alternative space complexity O() / time complexity O()
+
+//Solution Attempt
+
+function bestSum(targetSum, numbers) {
+    let table = Array(targetSum + 1).fill(null);
+    table[0] = [];
+
+    for(let i = 0; i < table.length; i++) {
+        if(table[i] !== null) {
+            for(let num of numbers) {
+                let checkPosition = i + num;
+                if(checkPosition < table.length) {
+                    let combination = [...table[i], num];
+                    if(table[checkPosition] === null || combination.length < table[checkPosition].length) table[checkPosition] = combination;
+                }
+            }
+        }
+    }
+
+    return table[targetSum];
+}
+
+//Testing Notes
+
+Seems to work as intended. Have not completed testing as of yet
