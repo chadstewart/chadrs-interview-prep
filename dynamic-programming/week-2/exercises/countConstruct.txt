@@ -1,0 +1,134 @@
+//Problem Statement
+
+Write a function 'countConstruct(target, wordBank)' that accepts a target string and an array of strings.
+
+The function should return the number of ways that the 'target' can be constructed by concatenating elements of the 'wordBank' array.
+
+You may reuse elements of 'wordBank' as many times as needed.
+
+//Examples
+
+target = abc, wordBank = b,a,r,c, ans = 1
+target = abc, wordBank = abc, a, bc, ab, c, l, acb, ans = 3
+
+//Example Notes
+
+Similar to canConstruct. Even though there are words with the same characters in wordBank examples, they are not correct because they are not in the right order.
+
+//Tests
+
+*Tests go here*
+
+//Proposed Procedure
+
+1. Check if word is empty string and return 1
+2. Create variable and initialize it to 0;
+3. Loop through wordBank
+  a. Create variable to check prefix
+  b. If prefix matches selected word
+    i. Slice selectedword from main word, 
+    ii. Recursively call function using sliced word and add result
+4. Return variable
+
+Proposed space complexity O(m) / time complexity O(n^m*n)
+
+//Solution Attempt
+
+function countConstruct(target, wordBank) {
+    if(target === '') return 1;
+
+    let result = 0;
+
+    for(let selectedWord of wordBank) {
+        let checkWord = target.slice(0, selectedWord.length);
+        if(checkWord === selectedWord) {
+            let remainingWord = target.slice(selectedWord.length)
+            result = result + countConstruct(remainingWord, wordBank);
+        }
+    }
+
+    return result;
+}
+
+//Testing Notes
+
+Wasn't able to come up with the solution to this problem on my own. Will have to go over this problem again. Chose the wrong base case (chose an array as opposed to a number) to work with.
+
+//Can this procedure be optimized?
+
+Yes, this can be optimized because there is duplicate work being done.
+
+//Optimized Procedure
+
+1. Define memo object in function definition
+2. Check if word is in memo object and if so return memo object
+3. Check if word is empty string and return 1
+4. Create variable and initialize it to 0;
+5. Loop through wordBank
+  a. Create variable to check prefix
+  b. If prefix matches selected word
+    i. Slice selectedword from main word, 
+    ii. Recursively call function using sliced word and add result
+6. Add result to memo object and then return target in memo object
+
+Optimized space complexity O(m^2) / time complexity  O(n^2*m)
+
+//Solution Attempt:
+
+function countConstruct(target, wordBank, memo = {}) {
+    if(memo[target]) return memo[target];
+    if(target === '') return 1;
+
+    let result = 0;
+
+    for(let selectedWord of wordBank) {
+        let checkWord = target.slice(0, selectedWord.length);
+        if(checkWord === selectedWord) {
+            let remainingWord = target.slice(selectedWord.length)
+            result = result + countConstruct(remainingWord, wordBank, memo);
+        }
+    }
+
+    memo[target] = result;
+    return memo[target];
+}
+
+//Testing Notes
+
+*Any testing observations go here*
+
+//Alternate Procedure
+
+1. Create table of size target.length + 1 and fill with 0
+2. Seed table[0] with 1
+3. Loop through table
+  a. If table cell is marked true, loop through wordBank
+    i. If selected word is in target at index, add number in current cell to number in new cell
+4. Return table[target.length]
+
+//Alternate space complexity O(m) / time complexity O(n^2*m)
+
+//Solution Attempt
+
+function countConstruct(target, wordBank) {
+    let table = Array(target.length + 1).fill(0);
+    table[0] = 1;
+
+    for(let i = 0; i < table.length; i++) {
+        if(table[i] > 0) {
+            for(let selectedWord of wordBank) {
+                let jumpsToComboCell = i + selectedWord.length;
+                let checkWord = target.slice(i, jumpsToComboCell);
+                if(checkWord === selectedWord) {
+                    table[jumpsToComboCell] = table[i] + table[jumpsToComboCell];
+                }
+            }
+        }
+    }
+
+    return table[target.length];
+}
+
+//Testing Notes
+
+Works as intended
