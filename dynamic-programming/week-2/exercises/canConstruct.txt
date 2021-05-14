@@ -1,0 +1,140 @@
+//Problem Statement
+
+Write a function 'canConstruct(target, wordBank)' that accepts a target string and an array of strings.
+
+The function should return a boolean indicating whether or not the 'target' can be constructed by concatenating elements of the 'wordBank' array.
+
+
+You may resume elements of 'wordBank' as many times as needed.
+
+//Examples
+
+word = abc, wordBank = b, a, r, c, ans = true
+word = penguin, wordBank = pen, p, gen, ui, in, g, uin, ans = true
+word = dealt, wordBank = w, i, n, hap, py, de, bt, a, ans = false
+
+//Example Notes
+
+Tree constructed with prefixes only but can be constructed by looking through the whole word string.
+
+//Tests
+
+*Tests go here*
+
+//Proposed Procedure
+
+1. Check if the word is an empty string and return true if true
+2. Create check variable
+3. Loop through wordBank
+  a. If word in wordBank matches prefix in main word
+  b. splice word from wordBank out of word and recursively call function and put the result in check variable
+4. Return check variable
+
+Proposed space complexity O(m) / time complexity O(n^m)
+
+//Solution Attempt
+
+function canConstruct(word, wordBank) {
+    if(word === '') return true;
+
+    let result = false;
+
+    for(let selectedWord of wordBank) {
+        if(selectedword.length > word.length) continue;
+        let checkWord = word.slice(0, selectedWord.length);
+        if(selectedWord === checkWord) {
+            let newWordParam = word.slice(checkWord.length);
+            result = canConstruct(newWordParam, wordBank);
+            return result;
+        }
+    }
+
+    return result;
+}
+
+//Testing Notes
+
+Works as intended.
+
+//Can this procedure be optimized?
+
+Yes, it can be optimized because there is duplicate work being done.
+
+//Optimized Procedure
+
+1. Define memo object in function definition.
+2. Check if word is in memo object and return if it is
+3. Check if the word is an empty string and return true if true
+4. Create check variable
+5. Loop through wordBank
+  a. If word in wordBank matches prefix in main word
+    i. splice word from wordBank out of word and recursively call function and put the result in memo object
+    ii. return memo object
+6. Add false to memo object and return false
+
+Optimized space complexity O(m^2) / time complexity  O(m)
+
+//Solution Attempt:
+
+function canConstruct(word, wordBank, memo = {}) {
+    if(memo[word]) return memo[word];
+    if(word === '') return true;
+
+    let result = false;
+
+    for(let selectedWord of wordBank) {
+        if(selectedword.length > word.length) continue;
+        let checkWord = word.slice(0, selectedWord.length);
+        if(selectedWord === checkWord) {
+            let newWordParam = word.slice(checkWord.length);
+            result = canConstruct(newWordParam, wordBank, memo);
+            memo[word] = result;
+            return memo[word];
+        }
+    }
+
+    memo[word] = result;
+    return memo[word];
+}
+
+//Testing Notes
+
+Works as intended.
+
+//Alternate Procedure
+
+1. Create an array of word.length + 1 and fill it with false.
+2. Seed table[0] with true.
+3. Loop through table
+  a. if table[index] is true loop through wordBank
+    i. Get word slice based on index of table and word from wordBank length
+    ii. If selectedWord matches word slice, mark index + selected word length true as long as index + selected word is less than table length.
+4. Return table[word.length]
+
+//Alternate space complexity O(n) / time complexity O(n * m^2)
+
+//Solution Attempt
+
+function canConstruct(word, workBank) {
+    let table = Array(word.length + 1).fill(false);
+    table[0] = true;
+
+    for(let i = 0; i < table.length; i++) {
+        if(table[i] === true) {
+            for(let selectedWord of wordBank) {
+                let checkWord = word.slice(i, i + selectedWord.length);
+                if(selectedWord === checkWord) {
+                    let indexToMark = i + selectedWord.length;
+                    if (indexToMark < table.length) table[indexToMark] = true;
+                    }
+            }
+        }
+    }
+
+    return table[word.length];
+}
+
+
+//Testing Notes
+
+Was not able to solve this problem in this way on my own. Will need to revisit this problem in the future.
