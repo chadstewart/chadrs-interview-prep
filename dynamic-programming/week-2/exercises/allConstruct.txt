@@ -1,0 +1,186 @@
+//Problem Statement
+
+Write a function 'allConstruct(target, wordBank)' that accepts a target string and an array of strings.
+
+The fucntion should return a 2D array containing all the warys that the 'target' can be constructed by concatenating elemts of the 'wordBank' array. Each Element of the 2D array should represent one combination that constructs the 'target'.
+
+You may reuse elements of the 'wordBank' as many times as needed.
+
+//Examples
+
+target = abc, wordBank = b,a,r,c, ans = [[a,b,c]]
+target = abc, wordBank = abc, a, bc, ab, c, l, acb, ans = [[a,b,c],[a,bc],[ab,c]]
+
+//Example Notes
+
+There needs to be an array at the top level to capture the combinations being created by each branch.
+
+//Tests
+
+*Tests go here*
+
+//Proposed Procedure
+
+1. Check if target is null, if so then return an empty array.
+2. Create variable and initialize with empty array
+3. Loop through wordBank
+  a. Create variable to check prefix against wordBank
+  b. If prefix matches selectedWord from wordBank
+    i. Create remainingWord by slicing target starting at selectedWord length
+    ii. Create variable combination that has wordBank word and result of recursively calling function
+    iii. Add combination to result variable
+4. Return result variable
+
+Proposed space complexity O(m) / time complexity O(n^m)
+
+//Solution Attempt
+
+function allConstruct(target, wordBank) {
+    if(target === '') return [];
+
+    let result = [];
+
+    for(let selectedWord of wordBank) {
+        let checkWord = target.slice(0, selectedWord.length);
+        if(selectedWord === checkWord) {
+            let remainingWord = target.slice(selectedWord.length);
+            let returnedArray = allConstruct(remainingWord, wordBank);
+            let combo = [selectedWord, ...returnedArray];
+            result = [...result, combo];
+        }
+    }
+
+    return result;
+}
+
+//Testing Notes
+
+Got the answer but not in the structure that I wanted exactly. Had to go to the video to figure out exactly how to build the structure I wanted.
+
+//Updated Solution from video
+
+function allConstruct(target, wordBank) {
+    if(target === '') return [[]];
+
+    let result = [];
+
+    for(let selectedWord of wordBank) {
+        let checkWord = target.slice(0, selectedWord.length);
+        if(selectedWord === checkWord) {
+            let remainingWord = target.slice(selectedWord.length);
+            let returnedArray = allConstruct(remainingWord, wordBank);
+            let combo = returnedArray.map(array => [selectedWord, ...array]);
+            result.push(...combo);
+        }
+    }
+
+    return result;
+}
+
+//Can this procedure be optimized?
+
+Yes, this can be optimized as there is a lot of duplicate work being done.
+
+//Optimized Procedure
+
+1. Create memo object in function definition
+2. Check if target is in memo object.
+3. Check if target is null, if so then return an empty array.
+4. Create variable and initialize with empty array
+5. Loop through wordBank
+  a. Create variable to check prefix against wordBank
+  b. If prefix matches selectedWord from wordBank
+    i. Create remainingWord by slicing target starting at selectedWord length
+    ii. Create variable combination that has wordBank word and result of recursively calling function
+    iii. Add combination to result variable
+6. Add result to memo object and return target in memo object
+
+Optimized space complexity O(m) / time complexity  O(n^m)
+
+//Solution Attempt:
+
+//Updated Solution from video
+function allConstruct(target, wordBank, memo = {}) {
+    if(memo[target]) return memo[target];
+    if(target === '') return [[]];
+
+    let result = [];
+
+    for(let selectedWord of wordBank) {
+        let checkWord = target.slice(0, selectedWord.length);
+        if(selectedWord === checkWord) {
+            let remainingWord = target.slice(selectedWord.length);
+            let returnedArray = allConstruct(remainingWord, wordBank);
+            let combo = returnedArray.map(array => [selectedWord, ...array]);
+            result.push(...combo);
+        }
+    }
+
+    memo[target] = result;
+    return memo[target];
+}
+
+//Testing Notes
+
+Even though we are doing no duplicate work, because we have to represent the entirity of the combinations of this problem, we don't improve the run time.
+
+//Alternate Procedure
+
+1. Create table of size target.length + 1 and fill with null.
+2. Seed table[0] with an empty 2D array.
+3. Loop through table
+  a. If element at index is not null then loop through wordBank
+    i. Create checkWord from index to selectedWord from wordBank length plus index.
+    ii. if checkWord is the same as selectedWord add combos from element at table index to combos at table index + selectedWord length.
+4. Return table[target.length]
+
+//Alternate space complexity O(m^2) / time complexity O(n^m)
+
+//Alternate Solution Attempt
+
+function allConstruct(target, wordBank) {
+    let table = Array(target.length + 1).fill().map(() => []);
+    table[0] = [[]];
+
+    for(let i = 0; i < table.length; i++) {
+        if(table[i].length > 0) {
+            for(let selectedWord of wordBank) {
+                let indexOfSelectedWord = i + selectedWord.length;
+                if(indexOfSelectedWord >= table.length) continue;
+                let checkWord = target.slice(i, indexOfSelectedWord);
+                if(checkWord === selectedWord) {
+                    table[indexOfSelectedWord] = [...table[indexOfSelectedWord], table[i]];
+                }
+            }
+        }
+    }
+
+    return table[target.length];
+}
+
+//Updated Solution after watching video
+
+function allConstruct(target, wordBank) {
+    let table = Array(target.length + 1).fill().map(() => []);
+    table[0] = [[]];
+
+    for(let i = 0; i < table.length; i++) {
+        if(table[i].length > 0) {
+            for(let selectedWord of wordBank) {
+                let indexOfSelectedWord = i + selectedWord.length;
+                if(indexOfSelectedWord >= table.length) continue;
+                let checkWord = target.slice(i, indexOfSelectedWord);
+                if(checkWord === selectedWord) {
+                    let combo = table[i].map(array => [...array, selectedWord]);
+                    table[indexOfSelectedWord].push(...combo);
+                }
+            }
+        }
+    }
+
+    return table[target.length];
+}
+
+//Testing Notes
+
+Had a similar problem here like with the memoization problem. Didn't map out the arrays in the combo and didn't spread the arrays. I'm not going to lie, working with things that aren't simply primitives in dynamic programming is really hard.
