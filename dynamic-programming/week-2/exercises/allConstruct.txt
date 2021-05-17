@@ -2,7 +2,7 @@
 
 Write a function 'allConstruct(target, wordBank)' that accepts a target string and an array of strings.
 
-The fucntion should return a 2D array containing all the warys that the 'target' can be constructed by concatenating elemts of the 'wordBank' array. Each Element of the 2D array should represent one combination that constructs the 'target'.
+The function should return a 2D array containing all the ways that the 'target' can be constructed by concatenating elements of the 'wordBank' array. Each Element of the 2D array should represent one combination that constructs the 'target'.
 
 You may reuse elements of the 'wordBank' as many times as needed.
 

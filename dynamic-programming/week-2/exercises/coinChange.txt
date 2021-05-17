@@ -1,0 +1,113 @@
+//Problem Statement
+
+You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+
+Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+
+You may assume that you have an infinite number of each kind of coin.
+
+//Examples
+
+coins = [1,2,5], amount = 11, ans = 3 (1+5+5)
+coins = [1,2], amount = 3, ans = 2 (1+2)
+
+//Example Notes
+
+Don't need to return the combination of coins, just the number of lowest coins.
+
+//Tests
+
+coinChange(11, [1,2,5])
+coinChange(3, [1,2,5])
+
+//Proposed Procedure
+
+1. Check if amount is > 0, if so return 0
+2. Check if amount is 0, if so return 1
+3. Create variable result and set it to -1;
+4. Loop through coins array
+  a. Create variable called output and store result of recursively called function
+  b. If output is less than result or result is -1 then put output in result.
+5. Return result 
+
+Proposed space complexity O(m) / time complexity O(m*n^m)
+
+//Can this procedure be optimized?
+
+Yes, there is a lot of duplicate work being done
+
+//Optimized Procedure
+
+1. Create table of size amount + 1 and fill with -1
+2. Seed table[0] with 0
+3. Loop through coins array
+  a. If index of table is not 0 loop through coins array
+    i. If index + coin less than table.length
+      1. Check if element at index + coin is -1 or less than element at index + 1 and mark index + coin with element + 1 at index;
+4. Return table[amount]
+
+Optimized space complexity O(m) / time complexity  O(m*n^m)
+
+//Solution Attempt:
+
+/**
+ * @param {number[]} coins
+ * @param {number} amount
+ * @return {number}
+ */
+var coinChange = function(coins, amount) {
+  let table = Array(amount + 1).fill(-1);
+  table[0] = 0;
+
+  for(let i = 0; i < table.length; i++) {
+      if(table[i] > -1) {
+          for(let coin of coins) {
+              let newPosition = coin + i;
+              if(newPosition < table.length) {
+                  let numOfCoins = table[i] + 1;
+                  if(table[newPosition] === -1 || numOfCoins < table[newPosition]) {
+                      table[newPosition] = numOfCoins;
+                  }
+              }
+          }
+      }
+  }
+
+  return table[amount];
+};
+
+//Testing Notes
+
+*Any testing observations go here*
+
+//Failed Solution
+
+1. Create memo object in function definition
+2. Check if amount is in memo object and return if it is
+3. Check if amount is > 0, if so return 0
+4. Check if amount is 0, if so return 1
+5. Create variable result and set it to -1;
+6. Loop through coins array
+  a. Create variable called output and store result of recursively called function
+  b. If output is less than result or result is -1 then put output in result.
+7. Add result to memo object and return amount in memo object
+
+var coinChange = function(coins, amount, memo = {}) {
+    if(memo[amount]) return memo[amount];
+    if(amount === 0) return 1;
+    if(amount < 0) return -1;
+
+    let result = -1;
+
+    for(let coin of coins) {
+        let count = coinChange(coins, amount - coin, memo);
+        if(count > 0) {
+            if(result === -1 || count < result) {
+                result = count;
+            }
+        }
+    }
+
+    memo[amount] = result;
+    return result === -1 ? result : result++;
+};
