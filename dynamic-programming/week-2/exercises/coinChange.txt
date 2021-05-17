@@ -22,12 +22,13 @@ coinChange(3, [1,2,5])
 
 //Proposed Procedure
 
-1. Check if amount is > 0, if so return 0
-2. Check if amount is 0, if so return 1
+1. Check if amount is > 0, if so return -1
+2. Check if amount is 0, if so return 0
 3. Create variable result and set it to -1;
 4. Loop through coins array
-  a. Create variable called output and store result of recursively called function
-  b. If output is less than result or result is -1 then put output in result.
+  a. Create variable called counter and store result of recursively called function
+  b. If counter is greater than -1
+    i. if result is -1 or counter is less than result, add counter + 1 to result
 5. Return result 
 
 Proposed space complexity O(m) / time complexity O(m*n^m)
@@ -78,36 +79,38 @@ var coinChange = function(coins, amount) {
 
 //Testing Notes
 
-*Any testing observations go here*
+Just need to really work on finding the correct base case when working on these problems. If that base case is wrong then the whole problem falls to pieces.
 
-//Failed Solution
+//Alternate Solution
 
-1. Create memo object in function definition
-2. Check if amount is in memo object and return if it is
-3. Check if amount is > 0, if so return 0
-4. Check if amount is 0, if so return 1
+1. Add memo object to function definition
+2. Check if amount is in memo object
+3. Check if amount is > 0, if so return -1
+4. Check if amount is 0, if so return 0
 5. Create variable result and set it to -1;
 6. Loop through coins array
-  a. Create variable called output and store result of recursively called function
-  b. If output is less than result or result is -1 then put output in result.
-7. Add result to memo object and return amount in memo object
+  a. Create variable called counter and store result of recursively called function
+  b. If counter is greater than -1
+    i. if result is -1 or counter is less than result, add counter + 1 to result
+    ii. Add current result to amount in memo object
+7. Return result 
 
 var coinChange = function(coins, amount, memo = {}) {
     if(memo[amount]) return memo[amount];
-    if(amount === 0) return 1;
+    if(amount === 0) return 0;
     if(amount < 0) return -1;
 
     let result = -1;
 
     for(let coin of coins) {
         let count = coinChange(coins, amount - coin, memo);
-        if(count > 0) {
+        if(count > -1) {
             if(result === -1 || count < result) {
-                result = count;
+                result = count + 1;
+                memo[amount] = result;
             }
         }
     }
 
-    memo[amount] = result;
-    return result === -1 ? result : result++;
+    return memo[amount];
 };
