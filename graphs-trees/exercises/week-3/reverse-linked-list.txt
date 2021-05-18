@@ -1,0 +1,59 @@
+//Problem Statement
+
+Reverse a singly linked link list.
+
+Definition: Linked List
+let linkedList = {
+    data: *int*,
+    next: *next node*
+}
+
+//Examples
+
+linked list: 1,2,3,4,5, reversed: 5,4,3,2,1
+linked list: 8,2,4,3, reversed 3,4,2,8
+
+//Example Notes
+
+*Any observations going through the example goes here*
+
+//Tests
+
+*Tests go here*
+
+//Proposed Procedure
+
+1. Create variable called current with head node
+2. Create temp variable called prev for swap and initialize to null
+3. Make while loop that checks that current is not empty
+  a. Create temp and save next of current
+  b. Write prev value to next of current
+  c. Write current to prev
+  d. Write temp to current
+
+Proposed space complexity O(1) / time complexity O(n)
+
+//Can this procedure be optimized?
+
+This is the most optimal way of going through the linked list
+
+//Solution Attempt:
+
+function reverseLinkedList(head) {
+    if(!head) return "Please add the head of a Linked List";
+    let current = head;
+    let prev = null;
+
+    while(current) {
+        let temp = current.next;
+        current.next = prev;
+        prev = current;
+        current = temp;
+    }
+
+    return "Completed";
+}
+
+//Testing Notes
+
+Keeping everything in your mind is extremely difficult. The problem's execution is simple but the debugging is hard mentally. Significantly easier to debug with a debugger.

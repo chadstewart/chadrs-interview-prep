@@ -1,0 +1,58 @@
+///Problem Statement
+
+Reverse a doubly linked link list.
+
+Definition: Doubly Linked List
+let linkedList = {
+    data: *int*,
+    next: *next node*,
+    prev: *prev node
+}
+
+//Examples
+
+linked list: 1,2,3,4,5, reversed: 5,4,3,2,1
+linked list: 8,2,4,3, reversed 3,4,2,8
+
+//Example Notes
+
+*Any observations going through the example goes here*
+
+//Tests
+
+*Tests go here*
+
+//Proposed Procedure
+
+1. Create variable current and set to head
+2. Create while loop that loops while current is not null
+  a. Create temp variable and set to current's next
+  b. Write current's prev to current's next
+  c. Write temp to current's prev
+  d. Write current's prev to current
+
+Proposed space complexity O(1) / time complexity O(n)
+
+//Can this procedure be optimized?
+
+This is the most optimal solution for this problem.
+
+//Solution Attempt:
+
+function reverseDoublyLinkedList(head) {
+    if(!head) return "Please add the head of a Linked List"
+    let current = head;
+
+    while(current) {
+        let temp = current.next;
+        current.next = current.prev;
+        current.prev = temp;
+        current = current.prev;
+    }
+
+    return "Completed"
+}
+
+//Testing Notes
+
+It's so much easier to do this question when you know the pattern, lol. Also when you have a prev variable baked into each object. Thanks Mega Shake!
