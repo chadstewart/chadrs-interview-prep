@@ -1,0 +1,155 @@
+//Problem Statement
+
+Write a function that accepts a value and the root of a tree and does the following:
+
+1. Searches for a value in the tree and returns a booleon whether the value is found or not
+2. Adds the passed value to the tree
+3. Deletes the value from the tree
+
+Definition Tree node
+val node = {
+    data: *some data*,
+    left: *left child*,
+    right: *right child*
+}
+
+//Examples
+
+tree=*some tree*, value = 7, action = search, ans. = true
+tree=*some tree*, value = 13, action = search, ans. = false
+tree=*some tree*, value = 8, action = add, ans. '8 added to the tree'
+tree=*some tree*, value = 7, action = add, ans. '7 already exists in the tree'
+tree=*some tree*, value = 7, action = delete, ans. '7 deleted from the tree'
+
+//Example Notes
+
+There needs to be a way to differentiate between the actions
+
+//Tests
+
+*Tests go here*
+
+//Proposed Procedure
+
+Search
+1. Define DFS function
+2. Check if root node is null and return null if so
+3. Check if root node value is equal to target and return true if so
+4. Check if root node value is greater than or equal to target, put parent in a variable then traverse left if so and right if not
+
+Add.
+1. Leverage previous DFS function
+2. When a null root node is reached, create new node and add value to it
+
+Delete
+1. Leverage previous DFS function
+2. If root node is null, tell user node wasn't found
+3. If root node is found
+  a. If node has no children, delete parent address
+  b. if node has one child, change parent address to node's child address
+  c. if node has two children
+    i. Traverse to right most child of left node
+    ii. Swap values of target node is traversed node
+    iii. Perform previous delete function of traverse node
+4. Return message to user that node has been deleted
+
+Search. Proposed space complexity O(1) / time complexity O(log(n))
+Add. Proposed space complexity O(1) / time complexity O(log(n))
+Delete. Proposed space complexity O(1) / time complexity O(?log(n) + m)
+
+//Can this procedure be optimized?
+
+This is the most optimal way to traverse the tree to do actions.
+
+//Solution Attempt:
+
+function treeFunctions(target, root = null, action) {
+    if(!target || target.typeof !== 'number') return 'Please add a number as a target';
+    if(!action) return 'Please set a valid action';
+    if(!root) return 'Please add the root node of a tree";
+    return action(target, root);
+}
+
+function search(target, root, subAction = (found, parent, currentNode) => found) {
+    let currentNode = root;
+    let parentNode = null;
+
+    while(currentNode){
+        if(currentNode.data > target){
+            parentNode = currentNode;
+            currentNode = currentNode.left;
+        } else if(currentNode.data < target){
+            parentNode = currentNode;
+            currentNode = currentNode.right;
+        } else if(currentNode.data === target) { 
+            return subAction(true, parent, currentNode);
+        }
+    }
+    
+    return subAction(false, parent, currentNode);
+}
+
+function add(target, root) {
+    let addSubAction = (found, parent, currentNode) => {
+        if(found) {
+            return `{target} already exists in this tree`;
+        } else {
+            if(parent.data > target) {
+                parent.left = {
+                    data: target,
+                    left: null,
+                    right: null
+                };
+            } else {
+                parent.right = {
+                    data: target,
+                    left: null,
+                    right: null
+                };
+            }
+
+            return `{target} has been added to the tree`;
+        }
+    }
+
+    return search(target, root, addSubAction);
+}
+
+function delete(target, root) {
+    let deleteSubAction = (found, parent, currentNode) => {
+        if(!found) {
+            return `{target} does not exist in this tree`;
+        } else {
+            if(parent && !parent.left || !parent.right) {
+                let whichChildIsCurrent = parent.left ? 'left' : 'right';
+            }
+
+            if(!currentNode.left && !currentNode.right) {
+                parent ? parent[whichChildIsCurrent] = null : root = null;
+            } else if(currentNode.left || currentNode.right) {
+                let childToBeMoved = currentNode.left ? 'left' : 'right';
+
+                parent ? parent[whichChildIsCurrent] = currentNode[childToBeMoved] : root = currentNode[childToBeMoved];
+            } else {
+                let swapCurrent = currentNode.left;
+                let swapParent = null;
+
+                while(swapCurrent.right) {
+                    swapParent = swapCurrent;
+                    swapCurrent = swapCurrent.right;
+                }
+
+                currentNode.data = swapCurrent.data;
+                swapCurrent.left ? swapParent = swapCurrent.left : swapParent = null;
+            }
+        }
+
+        return `{target} has been deleted`;
+    }
+
+    return search(target, root, deleteSubAction);
+}
+
+//Testing Notes
+
+Everything works as expected but had some trouble forgetting about handling the case of whether the root node was the node to be deleted.
