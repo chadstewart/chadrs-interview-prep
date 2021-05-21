@@ -7,3 +7,7 @@ Tabulation Recipe (from coderbyte Dynamic Programming Course)
 5. seed the trivial answer into the table derived from base cases
 6. iterate through the table
 7. fill further positions based on the current position
+
+Important note!!
+
+Take special care on constructing your base case whenever you are doing Dynamic Programming. Quite often if your base case is bad, you’ll write code and even if the code is technically correct, the base case will break the code. It is also a very difficult bug to spot so take special care creating a good base case.

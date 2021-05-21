@@ -1,10 +1,14 @@
 Memoization Recipe (from coderbyte Dynamic Programming Course)
 
 1. Make it work
-  a. visualize the problem as a traveled
+  a. visualize the problem as a tree
   b. implement the tree using recursion
   c. test it
 2. Make it efficient.
   a. add a memo object
   b. add a base case to return memo values
   c. store return values into the memo
+
+Important note!!
+
+Take special care on constructing your base case whenever you are doing Dynamic Programming. Quite often if your base case is bad, you’ll write code and even if the code is technically correct, the base case will break the code. It is also a very difficult bug to spot so take special care creating a good base case.
