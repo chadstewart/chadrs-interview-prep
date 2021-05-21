@@ -1,0 +1,77 @@
+//Problem Statement
+
+You are given a nxm grid filled with 0s and 1s. All 1s are adjacent to each other. Count the number of 1s in the grid.
+
+//Examples
+
+0 1 = 2       0 0 0 0 = 5
+0 1           0 1 1 1
+              0 0 1 1
+
+//Example Notes
+
+Have to search for the first one but once the first one is found, you just need to check if an adjacent cell has a 1.
+
+//Proposed Procedure
+
+1. Loop through 2D matrix and return the location of the first one. If no 1s are found, return -1;
+2. If a location of a 1 is found, call a function dfs to traverse through the number of 1s and return a count.
+3. Define DFS function
+  1. If a 1 is encountered, incrememt count by 1 and mark cell as 0
+  2. Recursively call dfs on all adjacent cells
+  3. Return count
+
+Proposed space complexity O(1) / time complexity O(n^2)
+
+//Can this procedure be optimized?
+
+This is the most optimal solution for finding all the ones in a 2D graph
+
+//Solution Attempt:
+
+function numberOfOnes(grid) {
+    if(!grid) return 0;
+
+    let start = findFirstOne(grid);
+    return start !== -1 ? dfs(grid, start) : 0;
+}
+
+function findFirstOne(grid) {
+    for(let i = 0; i < grid.length; i++) {
+        for(let j = 0; j < grid[0].length; j++) {
+            if(grid[i][j] === 1) return [i, j];
+        }
+    }
+
+    return -1;
+}
+
+function dfs(grid, pos) {
+    let count = 0;
+
+    if(pos[0] > -1 &&
+       pos[1] > -1 &&
+       pos[0] < grid.length &&
+       pos[1] < grid[0].length &&
+       grid[pos[0]][pos[1]] === 1) {
+        count++;
+        grid[pos[0]][pos[1]] = 0;
+        count += dfs(grid, [pos[0] - 1, pos[1]]);
+        count += dfs(grid, [pos[0] + 1, pos[1]]);
+        count += dfs(grid, [pos[0], pos[1] - 1]);
+        count += dfs(grid, [pos[0], pos[1] + 1]);
+    }
+
+    return count;
+}
+
+//Tests
+
+grid = [[0,1],[0,1]], numberOfOnes(grid) = 2
+grid = [[0,0,0,0,0],[0,0,0,0,0],[0,0,1,1,1],[0,0,0,1,1]], numberOfOnes(grid) = 5
+grid = [[0,0],[0,0]], numberOfOnes(grid) = 2
+numberOfOnes(null) = 0
+
+//Testing Notes
+
+*Any testing observations go here*

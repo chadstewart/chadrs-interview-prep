@@ -1,0 +1,100 @@
+//Problem Statement
+
+You are climbing a staircase. It takes n steps to reach the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+//Examples
+
+n = 2, ans = 2
+n = 3, ans = 3
+
+//Example Notes
+
+Basic Dynamic programming problem with only two choices in how to proceed.
+
+//Proposed Procedure
+
+1. Create a table n + 1 and fill it with 0s
+2. Seed table[0] with 1
+3. Loop through table
+  a. If table[i] is not 0
+    i. Add element at table[i] to element at table[i + 1] and table[i + 2] as long as they are within table.length
+4. Return table[n]
+
+Proposed space complexity O(n) / time complexity O(n)
+
+//Solution Attempt:
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var climbStairs = function(n) {
+    let table = Array(n + 1).fill(0);
+    table[0] = 1;
+
+    for(let i = 0; i < table.length; i++) {
+        if(i + 2 < table.length) table[i + 2] += table[i];
+        if(i + 1 < table.length) table[i + 1] += table[i];
+    }
+
+    return table[n];
+};
+
+//Tests
+
+n = 2, climbStairs(n) = 2
+n = 3, climbStairs(n) = 3
+n = 5, climbStairs(n) = 8
+
+//Testing Notes
+
+Works as intended. Got it first try too!
+
+//Can this procedure be optimized?
+
+The space complexity can be optimized as this is similar to the fibonacci problem which can be done in O(1) space complexity.
+
+//Optimized Procedure
+
+1. Check if n = 0 return 0
+2. Create an array variable result and make both elements 1
+3. Check if n = 1 or 2 and return element in result based on n
+4. Create for loop that loops until n
+  a. Create temp variable and put element 2 in temp
+  b. Add element 1 to element 2
+  c. Rewrite element 1 with temp
+5. Return element 2 of array after loop
+
+Optimized space complexity O(1) / time complexity  O(n)
+
+//Solution Attempt:
+
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var climbStairs = function(n) {
+    let result = [1, 2];
+    if(n === 0) return 0;
+    if(n === 1 || n === 2) return result[n - 1];
+
+    for(let i = 3; i <= n; i++) {
+        let temp = result[1];
+        result[1] += result[0];
+        result[0] = temp;
+    }
+
+    return result[1];
+};
+
+//Tests
+
+n = 2, climbStairs(n) = 2
+n = 3, climbStairs(n) = 3
+n = 5, climbStairs(n) = 8
+
+//Testing Notes
+
+Forgot how to do space O(1)/time O(n) fibonacci which kinda messed me up for a moment. Handle to play around with the function to get it to work the way I wanted it to.

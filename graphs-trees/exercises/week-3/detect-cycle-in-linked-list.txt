@@ -1,0 +1,39 @@
+//Problem Statement
+
+*Problem Statement in own words go here*
+
+//Examples
+
+*Example goes here*
+
+//Example Notes
+
+*Any observations going through the example goes here*
+
+//Proposed Procedure
+
+*Written procedure goes here (brute force preferred)*
+
+Proposed space complexity O(?) / time complexity O(?)
+
+//Can this procedure be optimized?
+
+*Answer to above question goes here*
+
+//Optimized Procedure
+
+*Optimized procedure goes here*
+
+Optimized space complexity O(?) / time complexity  O(?)
+
+//Solution Attempt:
+
+*Code goes here*
+
+//Tests
+
+*Tests go here*
+
+//Testing Notes
+
+*Any testing observations go here*
