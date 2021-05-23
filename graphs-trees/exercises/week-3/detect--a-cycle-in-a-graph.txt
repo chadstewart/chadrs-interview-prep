@@ -1,0 +1,111 @@
+//Problem Statement
+
+Given a node in a graph, write a function that will detect a cycle in a graph.
+
+There is no guarantee that the graph is directed or undirected.
+
+//Examples
+
+adj. list:
+a: b,c,d
+b: c
+c: d, b
+d: a, b
+
+ans = true
+
+adj. list:
+
+a: b
+b: c
+c:
+
+ans = false
+
+//Example Notes
+
+Determining a defined route to check can be difficult. You have to check if you can create a loop from every starting node in the graph
+
+//Proposed Procedure
+
+1. Create visited object in function call
+2. Check if head exists and that it has neighbors, if not return false
+3. Create result varaible and set to false
+4. Add head to visited object loop through head's neighbors
+  a. If a neigbor already exists in neigbor return true
+  b. If not, and recursively call function with neighbor as head
+5. Return result 
+
+Proposed space complexity O(n^2) / time complexity O(n^n)
+
+//Solution Attempt:
+
+/**
+ * Definition for singly-linked list.
+ * function GraphNode(val) {
+ *     this.val = val;
+ *     this.neighbors = [];
+ * }
+ */
+
+/**
+ * @param {GraphNode} node
+ * @return {boolean}
+ */
+var hasCycle = function(node, visited = {}) {
+    visited[head] = true;
+    if(!node || !node.neighbors || !node.neigbors.length) return false;
+    let result = false;
+
+    for(let neigbor in node.neigbhors) {
+        if(neighbor in visited) return true;
+        result = hasCycle(neighbor, visited);
+        if(result === true) return result;
+    }
+
+    return result;
+};
+
+//Tests
+
+adj. list:
+a: b,c,d
+b: c
+c: d, b
+d: a, b
+
+hasCycle(a) = true
+
+adj. list:
+
+a: b
+b: c
+c:
+
+hasCycle(a) = false
+
+//Testing Notes
+
+Made the mistake of marking visited after returning a false if no neighbors so the node is viewed as not visited when it was. Corrected mistake.
+
+//Can this procedure be optimized?
+
+Not sure this can be optimized. There is potential of optimizing the space complexity reducing it to O(n) but am not sure if it's possible. May explore in the future.
+
+//Optimized Procedure
+
+*Optimized procedure goes here*
+
+Optimized space complexity O(?) / time complexity  O(?)
+
+//Solution Attempt:
+
+*Code goes here*
+
+//Tests
+
+*Tests go here*
+
+//Testing Notes
+
+*Any testing observations go here*

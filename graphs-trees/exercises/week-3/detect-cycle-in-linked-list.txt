@@ -1,39 +1,122 @@
 //Problem Statement
 
-*Problem Statement in own words go here*
+Given head, the head of a linked list, determine if the linked list has a cycle in it.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+
+Return true if there is a cycle in the linked list. Otherwise, return false.
 
 //Examples
 
-*Example goes here*
+linked list: 1,2,3,4,5, ans = false
+linked list 1,2,3,1, ans = true
+linked list 1,2,3,4,5,3 ans = true
 
 //Example Notes
 
-*Any observations going through the example goes here*
+There will never be an end to the linked list. There is no null value
 
 //Proposed Procedure
 
-*Written procedure goes here (brute force preferred)*
+1. Create an object that tracks visited nodes
+2. Create variable current that stores head
+3. While loop through the linked list while current node is true
+  a. Check if node exists in visited object
+    i. If true, return true
+    ii. If false, add node to visited and move current to next node
+4. Return true if while loop ends
 
-Proposed space complexity O(?) / time complexity O(?)
 
-//Can this procedure be optimized?
-
-*Answer to above question goes here*
-
-//Optimized Procedure
-
-*Optimized procedure goes here*
-
-Optimized space complexity O(?) / time complexity  O(?)
+Proposed space complexity O(n) / time complexity O(n)
 
 //Solution Attempt:
 
-*Code goes here*
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var hasCycle = function(head) {
+    let visited = {};
+    let current = head;
+
+    while(current) {
+        if(current in visited) return false;
+        visited[current] = true;
+        current = current.next; 
+    }
+
+    return false;
+};
 
 //Tests
 
-*Tests go here*
+(1,2,3,4,5)
+hasCycle(node with 1 value) = false;
+(1,2,3,1 same as first node)
+hasCycle(node with 1 value) = true;
 
 //Testing Notes
 
-*Any testing observations go here*
+Works as expected. Can require a lot of space if the linked list is large but will detect the loop at the node where it is looped.
+
+//Can this procedure be optimized?
+
+Yes, this can be done in O(1) space.
+
+//Optimized Procedure
+
+1. Check if head and head.next exists, if not return false
+2. Create two pointers, fast and slow, setting fast to head.next and slow to head
+3. Create while loop that runs while both fast.next.next and slow.next aren't null
+  i. If fast and slow are the same node, return true
+  ii. Update fast to fast.next.next and slow to slow.next;
+4. Return false if while loop ends
+
+Optimized space complexity O(1) / time complexity  O(n)
+
+//Solution Attempt:
+
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} head
+ * @return {boolean}
+ */
+var hasCycle = function(head) {
+    if(!head || !head.next) return false;
+    let fast = head.next;
+    let slow = head;
+
+    while(fast !== null && slow !== null) {
+        if(fast === slow) return true;
+        fast = fast.next ? fast.next.next : null;
+        slow = slow.next;
+    }
+
+    return false;
+};
+
+//Tests
+
+(1,2,3,4,5)
+hasCycle(node with 1 value) = false;
+(1,2,3,1 same as first node)
+hasCycle(node with 1 value) = true;
+
+//Testing Notes
+
+Works as expected. Even though there's a loop in the linked list, the loop detect will likely after node that causes the loop has been passed by at least one pointer.
