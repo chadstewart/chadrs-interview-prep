@@ -1,0 +1,161 @@
+//Problem Statement
+
+Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+
+//Examples
+
+grid: 0 1 ans = 1
+      0 1
+
+grid: 1 1 0 0  ans.  = 5
+      1 0 1 0
+      0 1 0 0
+      1 0 0 1
+
+//Example Notes
+
+You have to go through the entire grid to be able to count all the islands. 1s that are on a diagonal line are each their own island.
+
+//Proposed Procedure
+
+1. Create counter variable and set to 0
+2. Create a loop to search grid for a 1.
+3. Increment counter variable and call a DFS function that will crawl through all the 1s
+4. Define DFS
+  a. Check if position is within grid and is a 1
+  b. Mark current position as 0
+  c. Recursively call DFS going up, down, left or right
+5. Continue loop until loop ends
+6. Return counter
+
+Proposed space complexity O(n * m) / time complexity O(n * m)
+
+//Solution Attempt:
+
+/**
+ * @param {character[][]} grid
+ * @return {number}
+ */
+var numIslands = function(grid) {
+    let counter = 0;
+    for(let i = 0; i < grid.length; i++) {
+        for(let j = 0; j < grid[i].length]; j++) {
+            if(grid[i][j] === '1') {
+                counter++;
+                dfs(grid, i, j);
+            }
+        }
+    }
+
+    return counter;
+};
+
+function dfs(grid, posA, posB) {
+    if(posA < grid.length &&
+       posB < grid[0].length &&
+       posA > -1 &&
+       posB > -1 &&
+       grid[posA][posB] === '1') {
+        grid[posA][posB] === '0';
+        dfs(grid, posA - 1, posB);
+        dfs(grid, posA + 1, posB);
+        dfs(grid, posA, posB - 1);
+        dfs(grid, posA, posB + 1);
+    }
+    
+    return;
+}
+
+//Tests
+
+grid = [[0,1],[0,1]], numIslands(grid) = 1
+grid = [[1,1,0,0],[1,0,1,0],[0,0,1,0],[1,0,0,1]], numIslands(grid) = 5
+
+//Testing Notes
+
+Works as expected. Interesting problem is potentially the algorithm can hit a call stack limit because of the recursion.
+
+//Can this procedure be optimized?
+
+Yes, this can be potentially written iteratively to avoid leveraging the call stack and getting a stack overflow error.
+
+//Optimized Procedure
+
+1. Create counter variable and set to 0
+2. Create a loop to search grid for a 1.
+3. Increment counter variable and call a DFS function that will crawl through all the 1s
+4. Define DFS
+  a. Create a variable lower start
+  b. Create a loop where i is the first position passed and j is the second position passed.
+  c. Deincrement the count for traversing through columns until you see a zero on the left or you reach the beginning of the grid.
+  d. Loop through each grid row until you hit the edge or a zero
+  e. Check the cell directly below the cell you are at and check if there's a 1, save it to a variable if it's lower than what is there currently.
+  f. Mark a cell 0 as you are traversing through the grid
+5. Continue loop until loop ends
+6. Return counter
+
+Optimized space complexity O(m) / time complexity  O(n * m)
+
+//Solution Attempt:
+
+/**
+ * @param {character[][]} grid
+ * @return {number}
+ */
+var numIslands = function(grid) {
+    let counter = 0;
+    for(let i = 0; i < grid.length; i++) {
+        for(let j = 0; j < grid[i].length]; j++) {
+            if(grid[i][j] === '1') {
+                counter++;
+                searchIsland(grid, i, j);
+            }
+        }
+    }
+
+    return counter;
+};
+
+function searchIsland(grid, posA, posB) {
+        let lowerCells = [[posB], []];
+
+    for(let i = posA; i < grid.length; i++) {
+        let goBack = true;
+
+        if(lowerCells[0].length === 0) break;
+        
+        for(let j = lowerCells[0].shift(); j < grid[0].length; j++) {
+            if(goBack && j - 1 > -1 && grid[i][j-1] === '1') {
+                j -= 2;
+                continue;
+            } else if(goBack) goBack = false;
+
+            if(grid[i][j] === '1') {
+                grid[i][j] === '0';
+                if(j === lowerCells[0][0]) lowerCells[0].shift();
+                if(grid[i + 1][j] === '1') lowerCells[1].push(j);
+            } else if(grid[i][j] === '0' && lowerCells[0].length > 0) {
+                j = lowerCells[0].shift() - 1;
+                continue;
+            } else if(grid[i][j] === '0' && lowerCells[0].length === 0 ||
+                      j === grid[0].length - 1){
+                lowerCells[0] = [...lowerCells[1]];
+                lowerCells[1] = [];
+                break;
+            }
+        }
+    }
+    
+    return;
+}
+
+//Tests
+
+grid = [[0,1],[0,1]], numIslands(grid) = 1
+grid = [[1,1,0,0],[1,0,1,0],[0,0,1,0],[1,0,0,1]], numIslands(grid) = 5
+
+//Testing Notes
+
+I think this works as intended but I'm not 100% sure. I'm tired from writing this so I'll have to check in on it at another time.
