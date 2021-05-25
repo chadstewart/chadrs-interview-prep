@@ -1,0 +1,13 @@
+~ bitwise NOT operator: Takes one operand. Reverses all operand's bits.
+
+& bitwise AND operator: Takes two operands and compares them. If both bits are on, the resulting bit is on. Otherwise the resulting bit is off.
+
+| bitwise OR operator: Takes two operands and compares them. If either bit is on then the resulting bit is on. If both bits are off then the result is off.
+
+^ bitwise EXCLUSIVE OR operator: Takes two operands and compares them. If only one bit is on then the resulting bit is on. If both bits are the same then the resulting bit is off.
+
+<< Left Shift operator: Takes two operands, the first being the number to be shifted and the second being the shift amount. Shifts number by shift amount, truncating left bits and filling right bits with zero.
+
+>> Unsigned Right Shift operator: Takes two operands, the first being the number to be shifted and the second being the shift amount. Shifts number by shift amount, truncating right bits and filling left bits with zero.
+
+>>> Signed Right shift operator: Takes two operands, the first being the number to be shifted and the second being the shift amount. Shifts number by shift amount but preserves the right most bit (sign bit). Truncates right bits and filling left bits outside of the last left bit (sign bit) with zero.
