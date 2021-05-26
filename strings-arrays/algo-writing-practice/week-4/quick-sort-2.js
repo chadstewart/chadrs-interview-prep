@@ -1,6 +1,6 @@
 function quickSort(array = null, start = 0, end = array && array.length - 1) {
-    if(array === null) return 'Please add an array';
-
+    if(array === null) return null;
+    
     if(start < end) {
         let chosenPartition = randomPartition(array, start, end);
         quickSort(array, start, chosenPartition - 1);
@@ -21,7 +21,7 @@ function partition(array, start, end) {
     let i = start - 1;
 
     for(let j = start; j <= end; j++) {
-        if(array[j] < pivot){
+        if(array[j] < pivot) {
             i++;
             swap(array, i, j);
         }
@@ -31,10 +31,8 @@ function partition(array, start, end) {
     return i + 1;
 }
 
-function swap(array, pos1, pos2) {
-    let temp = array[pos1];
-    array[pos1] = array[pos2];
-    array[pos2] = temp;
+function swap(array, index1, index2) {
+    let temp = array[index1];
+    array[index1] = array[index2];
+    array[index2] = temp;
 }
-
-console.log(quickSort([3,1,6]));
