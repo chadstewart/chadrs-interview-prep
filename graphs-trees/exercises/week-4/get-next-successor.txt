@@ -62,20 +62,20 @@ function nextSuccessor(root, node) {
 
         while(currentNode !== node) {
             if(currentNode.data > node.data) {
-                parent[0] = parent[1];
-                parent[1] = currentNode;
+                parents[0] = parents[1];
+                parents[1] = currentNode;
                 currentNode = currentNode.left;
             } else {
-                parent[0] = parent[1];
-                parent[1] = currentNode;
+                parents[0] = parents[1];
+                parents[1] = currentNode;
                 currentNode = currentNode.right;
             }
         }
 
         if(parent[1].left === node) {
-            return parent[1];
+            return parents[1];
         } else {
-            return parent[0];
+            return parents[0];
         }
     }
 }
