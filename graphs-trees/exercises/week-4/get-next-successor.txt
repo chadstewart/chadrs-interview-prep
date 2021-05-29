@@ -37,15 +37,12 @@ Assumptions:
 1. Check if node has right child.
   a. If so traverse to left most child of that subtree.
 2. If node has no right child.
-  a. Traverse from root to child, saving the parent and the parent's parent of the current node.
-  b. If source node is left child, return parent.
-  c. If source node is right child, return parent's parent.
+  a. Create a variable named parents
+  b. Traverse from root to child, saving each node that is traversed in parents.
+  c. Once the node is found, loop backwards through the parents array until the node at index is the left child of parent at the node at index - 1.
+  d. Return the node at index - 1.
 
-Proposed space complexity O(1) / time complexity O(log n of a balanced tree, n of a completely unbalanced tree)
-
-//Can this procedure be optimized?
-
-This is the most optimal solution for solving this problem.
+Proposed space complexity O(log n) / time complexity O(log n of a balanced tree, n of a completely unbalanced tree)
 
 //Solution Attempt:
 
@@ -58,25 +55,81 @@ function nextSuccessor(root, node) {
         return currentNode;
     } else if(!node.right) {
         let currentNode = root;
-        let parents = [null, null];
+        let parents = [];
 
         while(currentNode !== node) {
+            parents.push(currentNode);
+
             if(currentNode.data > node.data) {
-                parents[0] = parents[1];
-                parents[1] = currentNode;
                 currentNode = currentNode.left;
             } else {
-                parents[0] = parents[1];
-                parents[1] = currentNode;
                 currentNode = currentNode.right;
             }
         }
 
-        if(parent[1].left === node) {
-            return parents[1];
-        } else {
-            return parents[0];
+       for(let i = parents.length - 1; i >= 0; i--) {
+           if(parent[i - 1].left === parent[i]) return parent[i - 1];
+       }
+    }
+}
+
+//Can this procedure be optimized?
+
+This is the most optimal solution in terms of time but this can be done in O(1) space.
+
+//Optimized Procedure
+
+Assumptions:
+1. Node is in tree whose root is being passed.
+2. There is a successor to the node being passed in the tree being passed
+3. There are no duplicate entries in the tree
+
+1. Check if node has right child.
+  a. If so traverse to left most child of that subtree.
+2. If node has no right child.
+  a. Create a variable current parents that is an array that holds two values and create a variable potentialSolution
+  b. Create boolean variable going right
+  c. Create while loop that checks if currentNode is equal to node passed
+    i. Swap index 1 with index 0 of current parents
+    ii. if traversing left, mark going right as false and set current node to it's left child.
+    iii. if traversing right
+      1. check if going right is false and if so, mark as true and put index 0 of current parents into potential solution
+      2. set current node to right child
+  d. Return potentialSolution
+
+//Optimized space complexity O(1) / time complexity O(log n)
+
+function nextSuccessor(root, node) {
+    if(root === null || node === null) return null;
+
+    if(node.right) {
+        let currentNode = node.right;
+        while(currentNode.left) currentNode = currentNode.left;
+        return currentNode;
+    } else if(!node.right) {
+        let currentNode = root;
+        let currentParents = [null, null];
+        let potentialSolution = null;
+        let goingRight = false;
+
+        while(currentNode !== node) {
+            currentParents[0] = currentParents[1];
+            currentParents[1] = currentNode;
+
+            if(currentNode.data > node.data) {
+                goingRight = false;
+                currentNode = currentNode.left;
+            } else {
+                if(!goingRight) {
+                    goingRight = true;
+                    potentialSolution = currentParents[0];
+                }
+
+                currentNode = currentNode.right;
+            }
         }
+
+       return potentialSolution;
     }
 }
 
@@ -134,11 +187,13 @@ function nextSuccessor(root, node) {
         while(currentNode.left) currentNode = currentNode.left;
         return currentNode;
     } else if(!node.right) {
-        if(node.parent.left === node) {
-            return node.parent;
-        } else {
-            return node.parent.parent;
+        let currentNode = node;
+
+        while(parent.right === currentNode) {
+            currentNode = currentNode.parent;
         }
+
+        return currentNode.parent;
     }
 }
 
