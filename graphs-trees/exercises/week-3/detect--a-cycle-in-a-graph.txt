@@ -53,8 +53,8 @@ Proposed space complexity O(n^2) / time complexity O(n^n)
  * @return {boolean}
  */
 var hasCycle = function(node, visited = {}) {
-    visited[head] = true;
     if(!node || !node.neighbors || !node.neigbors.length) return false;
+    visited[node] = true;
     let result = false;
 
     for(let neigbor in node.neigbhors) {
