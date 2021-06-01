@@ -1,0 +1,73 @@
+//Problem Statement
+
+Given an integer array nums, return the length of the longest strictly increasing subsequence.
+
+A subsequence is a sequence that can be derived from an array by deleting some or no elements without changing the order of the remaining elements. For example, [3,6,2,7] is a subsequence of the array [0,3,1,6,2,2,7].
+
+//Examples
+
+Example 1:
+
+Input: nums = [10,9,2,5,3,7,101,18]
+Output: 4
+Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
+
+Example 2:
+
+Input: nums = [0,1,0,3,2,3]
+Output: 4
+
+Example 3:
+
+Input: nums = [7,7,7,7,7,7,7]
+Output: 1
+
+//Example Notes
+
+We have to scan the entire array multiple times to ensure we found the longest subsequence. The solution is best described in tabulation.
+
+//Proposed Procedure
+
+1. Create variable for longest subsequence and initialize to 0.
+2. Create table of size nums length and fill with 1.
+3. Loop through table
+  a. Loop backwards through num array
+    i. For each num, check if it's less than current num and if so, take it's recorded num and add one and if it's larger than current recorded num, save that.
+    ii. At end of loop, check if the num created is larger than longest sequence variable and if so, save that.
+4. Return longest sequence variable.
+
+Proposed space complexity O(n) / time complexity O(n^2)
+
+//Can this procedure be optimized?
+
+I believe this the most optimized solution because you have to go through the entire array to figure out the longest increasing subsequence.
+
+//Solution Attempt:
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var lengthOfLIS = function(nums) {
+    let longestSubsequence = 0;
+    let table = Array(nums.length).fill(1);
+
+    for(let i = 1; i < nums.length; i++) {
+        for(let j = i - 1; j >= 0; j--) {
+            if(nums[i] > nums[j]) table[i] = Math.max(table[i], table[j] + 1);
+            if(j === 0) longestSubsequence = Math.max(table[i], longestSubsequence);
+        }
+    }
+
+    return longestSubsequence;
+};
+
+//Tests
+
+lengthOfLIS([10,9,2,5,3,7,101,18]) = 4
+lengthOfLIS([0,1,0,3,2,3]) = 4
+lengthOfLIS([7,7,7,7,7,7,7]) = 1
+
+//Testing Notes
+
+Works as expected. Still unsure about whether this can be optimized but optimization would probably be noticing that you don't need to continue the loop because of speific conditions and wouldn't affect the big O that much.
